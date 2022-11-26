@@ -3,7 +3,7 @@ It's like a framework to simplify the basic scripting
 to appeal to non-programmers.
 
 The main idea behind the Boxguage is that 
-user instead of coding with functions and self made classes
+user, instead of coding with functions and self made classes,
 uses special objects (boxes) with predefined internal methods,
 that modify given input and generate output.
 
