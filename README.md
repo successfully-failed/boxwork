@@ -1,5 +1,5 @@
 Boxguage is a semi-programming language. 
-It's more like a framework to simplify the basic scripting 
+It's like a framework to simplify the basic scripting 
 to appeal to non-programmers.
 
 The main idea behind the Boxguage is that 
