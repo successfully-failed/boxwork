@@ -10,21 +10,111 @@
 // (4) outputfield of the is set 
 // (5) connector passes the outputfield to other boxes
 //
+//
+//
+// after the line 140 there is propper functioning automated box class, 
+// which should be used
 //-------------------------------------------------------------------------------|
-struct variable 
-{
-	int var_i;
-	char var_cr;
-	double var_d;
-	std::string var_s;
-};
 
-class Box 
-{
-	public:
-		Box(){};
+
+class Box_Base 
+{	//---------------------structures of the class ------------------------------
+	struct variable 
+	{
+		int var_i = 0;
+		char var_cr = 'a';
+		double var_d = 0.0;
+		std::string var_s = "";
+
+		void refresher()
+		{
+			var_i =0;
+			var_cr = 'a';
+			var_d = 0.0;
+			var_s = "";
+		}
+	};
+	
+		//ports, that connect box with others
+	class ports
+	{
+		private:
+			
+			variable inputfield;
+			variable outputfield;
+			variable* connector = NULL;
+		public:	
+			ports()
+			{
+				inputfield.refresher();
+				outputfield.refresher();
+				connector =  nullptr; 
+			}	
+			void setimput (variable choice)	
+			{
+				choice = inputfield;
+			}
+
+			//methods to use from inside
+			void setoutput (variable choice/*one of box's variables*/)
+			{
+				outputfield = choice;
+				*connector = outputfield; 
+			}
+			
+			variable getinput()
+			{
+				return inputfield;
+			}
+
+			//pointer that connects boxes
+			
+
+			void connection_setter(bool opt, variable other_port)
+			{
+				if(opt == true)
+				{
+					connector = & other_port;
+				}
+				else 
+				{
+					connector = nullptr;
+				}
+			}
+
+			void refresher()
+			{
+				inputfield.refresher();
+				outputfield.refresher();
+				connector = nullptr;
+			}
+
+			~ports()
+			{
+				delete connector;
+			}
+
+	};
+
+//----------------------------------------Atributes of the class---------------
+	public: 
+		Box_Base() = default; 
 		//id of the box
 		std::string id;
+		//4 ports 1--output 2,3,4--input
+			
+	private:
+	 //variable stored and processed inside a box
+		variable var1; //export variable 
+		variable var2; //
+		variable var3; //import variables
+		variable var4; //
+		ports port1;
+		ports port2;
+		ports port3;
+		ports port4;	
+//--------------------------------------------mathods of the class-----------------------------
+	public:
 		//setter function. Takes parameters and modifies fields of chosen variable (var_ch)
 		void setter (int var_ch /* vaiable of choice */,int int_ch, char char_ch, double double_ch,std::string string_ch)
 		{
@@ -48,65 +138,37 @@ class Box
 			}
 		}
 		//returns variables to their default state
-		void cleaner (int var_chc,int int_ch, char char_ch, double double_ch, std::string string_ch)
+		void cleaner (variable variableofchoice)
 		{
-			variable var_temp;
-			var_temp.var_i = 0;    
-			var_temp.var_cr= '0';
-			var_temp.var_d = 0;
-			var_temp.var_s = "";
-			
-			switch(var_chc)
-			{
-			case 1:
-				var1 = var_temp;
-			case 2:
-				var2 = var_temp;
-			case 3:
-				var3 = var_temp;
-			case 4:
-				var4 = var_temp;
-			}
-
+			variableofchoice.refresher();
 		}
 
 
-	private:
-	 //variable stored and processed inside a box
-		variable var1; //export variable 
-		variable var2; //
-		variable var3; //import variables
-		variable var4; //
-		
-		//ports, that connect box with others
-		class ports
-		{
-		private:	
-			variable inputfield;
-			variable outputfield;
-		public:
-			//methods to use from inside
-			void setoutput (variable choice/*one of box's variables*/)
-			{
-			outputfield = choice;
-			*connector = outputfield; 
-			}
-			variable getinput()
-			{
-			return inputfield;
-			}
-			//pointer that connects boxes
-			variable* connector = NULL;
 
-			void connection_setter(bool opt, variable other_port)
-			{
-			connector = & other_port;
-			}
-		};
-		//4 ports 1--output 2,3,4--input
-	public:
-		ports port1;
-		ports port2;
-		ports port3;
-		ports port4;
+
 };
+
+
+
+
+//--------------------------------------------To do-----------------------
+//the functional class should be able to :
+// a) connect to others 
+// b) create an interface for the body 
+// c) make the interface with the builder -- object that will pass informations like port's adress to others 
+//
+//
+
+
+
+//class Box : public Box_Base {
+
+//}
+
+
+
+
+
+
+
+
